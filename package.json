@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@pdfsmaller/pdf-encrypt-lite": "^1.2.0",
     "browser-image-compression": "^2.0.2",
     "canvas-confetti": "^1.9.4",
     "file-saver": "^2.0.5",

@@ -1,6 +1,7 @@
 import { PDFDocument, PageSizes, degrees } from 'pdf-lib';
 import JSZip from 'jszip';
-import { getPdfDocument, renderPdfPageToDataUrl } from './pdfRenderer';
+import { getPdfDocument } from './pdfRenderer.js';
+import { encryptPDF } from '@pdfsmaller/pdf-encrypt-lite';
 
 /**
  * Merge multiple PDF files into one PDF
@@ -208,4 +209,120 @@ function convertImageToJpegBlob(file) {
 
     img.src = url;
   });
+}
+
+/**
+ * Reorder, rotate, and delete pages of a PDF
+ * pagesConfig: Array<{ originalIndex: number, rotation: number }>
+ */
+export async function organizePdf(pdfFile, pagesConfig, onProgress) {
+  const bytes = await pdfFile.arrayBuffer();
+  const srcPdf = await PDFDocument.load(bytes);
+  const newPdf = await PDFDocument.create();
+
+  const total = pagesConfig.length;
+  for (let i = 0; i < total; i++) {
+    const { originalIndex, rotation = 0 } = pagesConfig[i];
+    const [copiedPage] = await newPdf.copyPages(srcPdf, [originalIndex]);
+    if (rotation !== 0) {
+      const currentAngle = copiedPage.getRotation()?.angle || 0;
+      copiedPage.setRotation(degrees(((currentAngle + rotation) % 360 + 360) % 360));
+    }
+    newPdf.addPage(copiedPage);
+
+    if (onProgress) {
+      onProgress(Math.round(((i + 1) / total) * 100));
+    }
+  }
+
+  const pdfBytes = await newPdf.save();
+  return new Blob([pdfBytes], { type: 'application/pdf' });
+}
+
+/**
+ * Optimize digital vector PDF by cleaning unreferenced streams while preserving 100% crisp vector text
+ */
+export async function optimizeVectorPdf(pdfFile, onProgress) {
+  if (onProgress) onProgress(20);
+  const bytes = await pdfFile.arrayBuffer();
+  if (onProgress) onProgress(50);
+  const pdfDoc = await PDFDocument.load(bytes, { ignoreEncryption: true });
+  if (onProgress) onProgress(80);
+  const optimizedBytes = await pdfDoc.save({ useObjectStreams: true });
+  if (onProgress) onProgress(100);
+  return new Blob([optimizedBytes], { type: 'application/pdf' });
+}
+
+/**
+ * Compress a PDF by re-encoding pages with canvas at chosen scale & quality
+ */
+export async function compressPdf(pdfFile, preset = 'recommended', onProgress) {
+  const configs = {
+    extreme: { scale: 0.9, quality: 0.50 },
+    recommended: { scale: 1.25, quality: 0.70 },
+    light: { scale: 1.6, quality: 0.85 }
+  };
+  const { scale, quality } = configs[preset] || configs.recommended;
+
+  const pdfDoc = await getPdfDocument(pdfFile);
+  const numPages = pdfDoc.numPages;
+  const newPdf = await PDFDocument.create();
+
+  for (let i = 1; i <= numPages; i++) {
+    const page = await pdfDoc.getPage(i);
+    const viewport = page.getViewport({ scale });
+
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.floor(viewport.width);
+    canvas.height = Math.floor(viewport.height);
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    await page.render({ canvasContext: ctx, viewport }).promise;
+
+    const jpegBlob = await new Promise((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error(`Canvas conversion failed on page ${i}`));
+      }, 'image/jpeg', quality);
+    });
+    const jpegBytes = await jpegBlob.arrayBuffer();
+    const embeddedImg = await newPdf.embedJpg(jpegBytes);
+
+    const originalViewport = page.getViewport({ scale: 1.0 });
+    const newPage = newPdf.addPage([originalViewport.width, originalViewport.height]);
+    newPage.drawImage(embeddedImg, {
+      x: 0,
+      y: 0,
+      width: originalViewport.width,
+      height: originalViewport.height,
+    });
+
+    if (onProgress) {
+      onProgress(Math.round((i / numPages) * 100));
+    }
+  }
+
+  const pdfBytes = await newPdf.save();
+  return new Blob([pdfBytes], { type: 'application/pdf' });
+}
+
+/**
+ * Protect a PDF document with password encryption
+ */
+export async function protectPdf(pdfFile, userPassword, ownerPassword = '', onProgress) {
+  if (onProgress) onProgress(15);
+  const bytes = await pdfFile.arrayBuffer();
+  if (onProgress) onProgress(45);
+
+  const uint8Bytes = new Uint8Array(bytes);
+  const encryptedBytes = await encryptPDF(
+    uint8Bytes,
+    userPassword,
+    ownerPassword || userPassword
+  );
+
+  if (onProgress) onProgress(100);
+  return new Blob([encryptedBytes], { type: 'application/pdf' });
 }

@@ -117,3 +117,31 @@ export async function renderPdfPagesToImages(file, scale = 2.0, format = 'png', 
 
   return pageImages;
 }
+
+/**
+ * Inspect PDF content to check if it's primarily digital vector text or scanned image
+ */
+export async function inspectPdfContent(file) {
+  try {
+    const pdfDoc = await getPdfDocument(file);
+    const numPages = pdfDoc.numPages;
+    let totalTextItems = 0;
+    const samplePages = Math.min(numPages, 3);
+
+    for (let i = 1; i <= samplePages; i++) {
+      const page = await pdfDoc.getPage(i);
+      const textContent = await page.getTextContent();
+      totalTextItems += (textContent.items || []).length;
+    }
+
+    const isVectorText = totalTextItems > 15;
+    return {
+      numPages,
+      totalTextItems,
+      isVectorText,
+    };
+  } catch (e) {
+    console.warn('PDF inspection failed:', e);
+    return { numPages: 1, totalTextItems: 0, isVectorText: false };
+  }
+}
