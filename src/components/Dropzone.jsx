@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { UploadCloud, FileText, Image as ImageIcon } from 'lucide-react';
+import { UploadCloud, FileText, Image as ImageIcon, Zap, ShieldCheck } from 'lucide-react';
 
 export default function Dropzone({
   onFilesSelected,
@@ -79,8 +79,12 @@ export default function Dropzone({
         </button>
 
         <div className="dropzone-features">
-          <span className="feature-pill">⚡ Fast Local Processing</span>
-          <span className="feature-pill">🔒 Private & Secure</span>
+          <span className="feature-pill flex items-center gap-1">
+            <Zap className="w-3.5 h-3.5 text-slate-500" /> Cepat & Ringan
+          </span>
+          <span className="feature-pill flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> 100% Privat di Browser
+          </span>
         </div>
       </div>
     </div>
