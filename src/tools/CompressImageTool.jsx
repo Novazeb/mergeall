@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Minimize2, Trash2, Plus, Sparkles, Image as ImageIcon, ArrowRight, Check, Eye } from 'lucide-react';
+import { Download, Minimize2, Trash2, Plus, ArrowRight, Eye } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import Dropzone from '../components/Dropzone';
 import ProgressBar from '../components/ProgressBar';
@@ -42,7 +42,7 @@ export default function CompressImageTool() {
           compressedResult: null,
           isProcessingItem: false
         });
-      } catch (err) {
+      } catch {
         showToast(`Could not load image ${file.name}`, 'error');
       }
     }

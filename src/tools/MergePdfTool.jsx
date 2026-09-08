@@ -46,7 +46,7 @@ export default function MergePdfTool() {
           pageCount,
           thumbUrl
         });
-      } catch (err) {
+      } catch {
         showToast(`Could not read PDF file "${file.name}"`, 'error');
       }
     }

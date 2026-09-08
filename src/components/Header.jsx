@@ -1,11 +1,11 @@
 import React from 'react';
-import { Layers, Sparkles } from 'lucide-react';
+import { Layers } from 'lucide-react';
 import PrivacyBadge from './PrivacyBadge';
 
 export default function Header() {
   return (
     <header className="header-container">
-      <div className="header-content">
+      <div className="header-content flex items-center justify-between">
         <div className="logo-group">
           <div className="logo-icon-wrapper">
             <Layers className="w-5 h-5 text-white" />
@@ -17,6 +17,7 @@ export default function Header() {
             <p className="logo-tagline">Client-Side PDF & Image Utilities</p>
           </div>
         </div>
+        <PrivacyBadge compact={true} />
       </div>
     </header>
   );

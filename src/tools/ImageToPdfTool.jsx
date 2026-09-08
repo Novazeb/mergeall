@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowUp, ArrowDown, Download, ImagePlus, Plus, RefreshCw, Trash2, Check, FileText } from 'lucide-react';
+import { ArrowUp, ArrowDown, Download, ImagePlus, Plus, RefreshCw, Trash2, Check } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import Dropzone from '../components/Dropzone';
 import ProgressBar from '../components/ProgressBar';
@@ -42,7 +42,7 @@ export default function ImageToPdfTool() {
           previewUrl: meta.previewUrl,
           dimensions: `${meta.width} × ${meta.height}`
         });
-      } catch (e) {
+      } catch {
         showToast(`Could not load image ${file.name}`, 'error');
       }
     }

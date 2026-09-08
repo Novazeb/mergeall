@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Check, Download, FileArchive, RefreshCw, Scissors, Sparkles, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Check, Download, FileArchive, Scissors, Trash2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import Dropzone from '../components/Dropzone';
 import ProgressBar from '../components/ProgressBar';
