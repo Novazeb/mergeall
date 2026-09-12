@@ -22,7 +22,7 @@ export default function CompressPdfTool() {
   const handleFileSelected = async (files) => {
     const pdf = files[0];
     if (!pdf || (!pdf.type.includes('pdf') && !pdf.name.toLowerCase().endsWith('.pdf'))) {
-      showToast('Pilih file PDF yang valid.', 'error');
+      showToast('Please select a valid PDF file.', 'error');
       return;
     }
 
@@ -74,12 +74,12 @@ export default function CompressPdfTool() {
 
       if (!isLarger) {
         confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-        showToast('PDF berhasil dikompresi!', 'success');
+        showToast('PDF compressed successfully!', 'success');
       }
     } catch (err) {
       console.error('PDF compression error:', err);
       setIsProcessing(false);
-      showToast('Gagal memproses file PDF.', 'error');
+      showToast('Failed to process PDF file.', 'error');
     }
   };
 
@@ -99,9 +99,9 @@ export default function CompressPdfTool() {
   return (
     <div className="tool-card">
       <div className="tool-header">
-        <h2 className="tool-title">Kompresi PDF</h2>
+        <h2 className="tool-title">Compress PDF</h2>
         <p className="tool-description">
-          Optimalkan dokumen teks digital atau perkecil ukuran dokumen hasil scan di browser.
+          Optimize digital text documents or reduce scanned PDF size right in your browser.
         </p>
       </div>
 
@@ -110,8 +110,8 @@ export default function CompressPdfTool() {
           onFilesSelected={handleFileSelected}
           accept="application/pdf,.pdf"
           multiple={false}
-          title="Pilih atau seret file PDF ke sini"
-          subtitle="File diproses langsung di browser tanpa diunggah ke server"
+          title="Choose or drop a PDF file here"
+          subtitle="Files are processed directly in your browser without server upload"
           iconType="pdf"
         />
       ) : (
@@ -123,13 +123,13 @@ export default function CompressPdfTool() {
               <div className="truncate">
                 <h4 className="text-sm font-semibold text-slate-900 truncate">{file.name}</h4>
                 <p className="text-xs text-slate-500">
-                  Ukuran Asli: {formatBytes(file.size)} &bull; {inspection?.isVectorText ? 'Format Teks Digital' : 'Format Scan/Gambar'}
+                  Original Size: {formatBytes(file.size)} &bull; {inspection?.isVectorText ? 'Digital Text Format' : 'Scanned Image Format'}
                 </p>
               </div>
             </div>
 
             <button onClick={resetAll} className="btn-danger-outline">
-              <Trash2 className="w-4 h-4" /> Ganti File
+              <Trash2 className="w-4 h-4" /> Change File
             </button>
           </div>
 
@@ -137,11 +137,11 @@ export default function CompressPdfTool() {
           <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">
-                Pilih Jenis Dokumen
+                Select Document Type
               </span>
               {inspection?.isVectorText && (
                 <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full">
-                  <FileText className="w-3.5 h-3.5" /> Terdeteksi Teks Digital
+                  <FileText className="w-3.5 h-3.5" /> Digital Text Detected
                 </span>
               )}
             </div>
@@ -158,10 +158,10 @@ export default function CompressPdfTool() {
               >
                 <div className="flex items-center gap-2">
                   <ShieldCheck className={`w-4 h-4 ${mode === 'vector' ? 'text-indigo-600' : 'text-slate-500'}`} />
-                  <span className="text-sm font-bold text-slate-900">Dokumen Teks / Digital</span>
+                  <span className="text-sm font-bold text-slate-900">Digital / Text Document</span>
                 </div>
                 <p className="text-xs text-slate-500 leading-normal">
-                  Menjaga kualitas huruf tetap tajam 100%. Cocok untuk file ekspor Word, Canva, dan Google Docs.
+                  Preserves 100% crisp vector text quality. Best for documents exported from Word, Canva, or Google Docs.
                 </p>
               </button>
 
@@ -176,10 +176,10 @@ export default function CompressPdfTool() {
               >
                 <div className="flex items-center gap-2">
                   <Camera className={`w-4 h-4 ${mode === 'scan' ? 'text-indigo-600' : 'text-slate-500'}`} />
-                  <span className="text-sm font-bold text-slate-900">Dokumen Scan / Foto</span>
+                  <span className="text-sm font-bold text-slate-900">Scanned / Image Document</span>
                 </div>
                 <p className="text-xs text-slate-500 leading-normal">
-                  Kompresi gambar untuk dokumen hasil scan/foto HP berukuran besar (target di bawah 300KB).
+                  Image compression for large scanned files or phone photos (target under 300KB).
                 </p>
               </button>
             </div>
@@ -189,7 +189,7 @@ export default function CompressPdfTool() {
               <div className="p-3 bg-amber-50 border border-amber-200 rounded-md text-xs text-amber-700 flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                 <span>
-                  Dokumen ini berisi teks digital. Mengubah teks digital menjadi gambar dapat membuat huruf menjadi buram dan ukuran file bertambah besar.
+                  This document contains digital text. Converting digital text into raster images can make characters blurry and increase file size.
                 </span>
               </div>
             )}
@@ -197,7 +197,7 @@ export default function CompressPdfTool() {
             {/* Presets row for Scan mode */}
             {mode === 'scan' && (
               <div className="pt-2 flex flex-col gap-2">
-                <span className="text-xs font-medium text-slate-700">Resolusi Kompresi:</span>
+                <span className="text-xs font-medium text-slate-700">Compression Resolution:</span>
                 <div className="grid grid-cols-3 gap-2">
                   <button
                     type="button"
@@ -208,7 +208,7 @@ export default function CompressPdfTool() {
                         : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    Ringan (150 DPI)
+                    Light (150 DPI)
                   </button>
                   <button
                     type="button"
@@ -219,7 +219,7 @@ export default function CompressPdfTool() {
                         : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    Seimbang (120 DPI)
+                    Balanced (120 DPI)
                   </button>
                   <button
                     type="button"
@@ -230,7 +230,7 @@ export default function CompressPdfTool() {
                         : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    Maksimal (90 DPI)
+                    Maximum (90 DPI)
                   </button>
                 </div>
               </div>
@@ -238,7 +238,7 @@ export default function CompressPdfTool() {
           </div>
 
           {isProcessing && (
-            <ProgressBar progress={progress} label="Memproses optimasi PDF di browser..." />
+            <ProgressBar progress={progress} label="Optimizing PDF in browser..." />
           )}
 
           {/* Result Panel */}
@@ -250,20 +250,20 @@ export default function CompressPdfTool() {
                     <Info className="w-4 h-4" />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h4 className="text-sm font-bold text-slate-900">File Asli Sudah Paling Efisien</h4>
+                    <h4 className="text-sm font-bold text-slate-900">Original File is Already Optimal</h4>
                     <p className="text-xs text-slate-600 leading-normal">
-                      Ukuran asli <strong>{formatBytes(file.size)}</strong>, hasil kompresi <strong>{formatBytes(compressedResult.size)}</strong>. 
-                      Dokumen teks digital sudah terkompresi secara optimal. Disarankan tetap memakai file asli agar huruf tidak buram.
+                      Original size is <strong>{formatBytes(file.size)}</strong>, compressed result is <strong>{formatBytes(compressedResult.size)}</strong>. 
+                      Digital text documents are already optimally compressed. It is recommended to keep the original file to prevent blurry text.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-end gap-2 pt-1 border-t border-slate-200">
                   <button onClick={resetAll} className="btn-secondary">
-                    Gunakan File Asli
+                    Keep Original File
                   </button>
                   <button onClick={handleDownload} className="btn-primary">
-                    <Download className="w-4 h-4" /> Tetap Unduh Hasil ({formatBytes(compressedResult.size)})
+                    <Download className="w-4 h-4" /> Download Anyway ({formatBytes(compressedResult.size)})
                   </button>
                 </div>
               </div>
@@ -275,8 +275,8 @@ export default function CompressPdfTool() {
                       <Check className="w-4 h-4" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900">Optimasi Selesai</h4>
-                      <p className="text-xs text-slate-600">Ukuran file berhasil diperkecil.</p>
+                      <h4 className="text-sm font-bold text-slate-900">Optimization Complete</h4>
+                      <p className="text-xs text-slate-600">File size successfully reduced.</p>
                     </div>
                   </div>
 
@@ -292,10 +292,10 @@ export default function CompressPdfTool() {
 
                 <div className="flex items-center justify-end gap-2 pt-1 border-t border-emerald-200/60">
                   <button onClick={handleCompress} className="btn-secondary">
-                    <RefreshCw className="w-4 h-4" /> Ulangi
+                    <RefreshCw className="w-4 h-4" /> Retry
                   </button>
                   <button onClick={handleDownload} className="btn-primary">
-                    <Download className="w-4 h-4" /> Unduh PDF ({formatBytes(compressedResult.size)})
+                    <Download className="w-4 h-4" /> Download PDF ({formatBytes(compressedResult.size)})
                   </button>
                 </div>
               </div>
@@ -307,7 +307,7 @@ export default function CompressPdfTool() {
                 disabled={isProcessing}
                 className="btn-primary btn-hero"
               >
-                {mode === 'vector' ? 'Optimalkan Dokumen Teks' : 'Kompres Dokumen Scan Sekarang'}
+                {mode === 'vector' ? 'Optimize Text Document' : 'Compress Scanned PDF Now'}
               </button>
             </div>
           )}
