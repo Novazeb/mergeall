@@ -10,11 +10,12 @@ import {
   Lock,
   Info,
   X,
-  ShieldCheck
+  ShieldCheck,
+  ScanLine
 } from 'lucide-react';
 
 const CATEGORIES = [
-  { id: 'all', label: 'Semua Fitur' },
+  { id: 'all', label: 'All Tools' },
   { id: 'organize', label: 'Organize' },
   { id: 'convert', label: 'Convert' },
   { id: 'optimize', label: 'Optimize' },
@@ -23,14 +24,15 @@ const CATEGORIES = [
 ];
 
 const TABS = [
-  { id: 'merge', label: 'Merge PDF', icon: Layers, desc: 'Gabung banyak file PDF', category: 'organize' },
-  { id: 'split', label: 'Split & Extract', icon: Scissors, desc: 'Pisah atau ambil halaman', category: 'organize' },
-  { id: 'organize', label: 'Atur & Putar', icon: RotateCw, desc: 'Rotasi dan susun urutan', category: 'organize' },
-  { id: 'img2pdf', label: 'Gambar ke PDF', icon: ImagePlus, desc: 'Ubah JPG/PNG ke PDF', category: 'convert' },
-  { id: 'pdf2img', label: 'PDF ke Gambar', icon: FileImage, desc: 'Ekspor halaman ke foto', category: 'convert' },
-  { id: 'compress', label: 'Kompres Gambar', icon: Minimize2, desc: 'Kecilkan ukuran gambar', category: 'optimize' },
-  { id: 'compresspdf', label: 'Kompres PDF', icon: Gauge, desc: 'Kecilkan ukuran file PDF', category: 'optimize' },
-  { id: 'protect', label: 'Kunci PDF', icon: Lock, desc: 'Beri proteksi password', category: 'security' },
+  { id: 'merge', label: 'Merge PDF', icon: Layers, desc: 'Combine multiple PDF files', category: 'organize' },
+  { id: 'split', label: 'Split & Extract', icon: Scissors, desc: 'Extract or separate pages', category: 'organize' },
+  { id: 'organize', label: 'Organize & Rotate', icon: RotateCw, desc: 'Reorder and rotate pages', category: 'organize' },
+  { id: 'scan', label: 'Scan Document', icon: ScanLine, desc: 'Clean document scan from photo', category: 'convert' },
+  { id: 'img2pdf', label: 'Image to PDF', icon: ImagePlus, desc: 'Convert JPG/PNG to PDF', category: 'convert' },
+  { id: 'pdf2img', label: 'PDF to Image', icon: FileImage, desc: 'Export pages to photos', category: 'convert' },
+  { id: 'compress', label: 'Compress Image', icon: Minimize2, desc: 'Reduce image file size', category: 'optimize' },
+  { id: 'compresspdf', label: 'Compress PDF', icon: Gauge, desc: 'Reduce PDF file size', category: 'optimize' },
+  { id: 'protect', label: 'Protect PDF', icon: Lock, desc: 'Password protect PDF', category: 'security' },
 ];
 
 export default function NavigationTabs({ activeTab, setActiveTab }) {
@@ -108,7 +110,7 @@ export default function NavigationTabs({ activeTab, setActiveTab }) {
             <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-emerald-600" />
-                <h3 className="text-base font-bold text-slate-900">Tentang Konversi Dokumen Office</h3>
+                <h3 className="text-base font-bold text-slate-900">About Office Document Conversion</h3>
               </div>
               <button
                 onClick={() => setShowOfficeModal(false)}
@@ -121,16 +123,16 @@ export default function NavigationTabs({ activeTab, setActiveTab }) {
 
             <div className="py-4 flex flex-col gap-3 text-xs text-slate-600 leading-relaxed">
               <p className="font-semibold text-slate-800 text-sm">
-                Mengapa tidak ada konversi PDF ke Word / Excel / PowerPoint?
+                Why is there no PDF to Word / Excel / PowerPoint conversion?
               </p>
               <p>
-                <strong>MergeAll</strong> menjaga <strong>100% Privasi di Browser</strong>. Seluruh proses dokumen berjalan di memori lokal laptop/HP Anda, tanpa pernah diunggah ke server mana pun.
+                <strong>MergeAll</strong> strictly maintains <strong>100% In-Browser Privacy</strong>. All document processing runs locally in your device memory without ever uploading your files to any external server.
               </p>
               <p>
-                Konversi format biner Microsoft Office (DOCX, XLSX, PPTX) membutuhkan server backend eksternal yang menjalankan LibreOffice atau API cloud pihak ketiga. Mengirim file ke server luar berisiko membocorkan data pribadi atau kerahasiaan berkas Anda.
+                Converting binary Microsoft Office formats (DOCX, XLSX, PPTX) requires backend servers running LibreOffice or third-party cloud APIs. Sending your files to external servers poses privacy and data security risks.
               </p>
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-md text-slate-700">
-                <strong>Tips:</strong> Untuk membuat PDF dari Word, Excel, atau PPT, cukup buka file di aplikasi Microsoft Office atau Google Docs, lalu pilih menu <strong>File &rarr; Simpan Sebagai PDF / Unduh PDF</strong>.
+                <strong>Tip:</strong> To create a PDF from Word, Excel, or PowerPoint, open the file in Microsoft Office or Google Docs and select <strong>File &rarr; Save As PDF / Download PDF</strong>.
               </div>
             </div>
 
@@ -139,7 +141,7 @@ export default function NavigationTabs({ activeTab, setActiveTab }) {
                 onClick={() => setShowOfficeModal(false)}
                 className="btn-primary"
               >
-                Tutup Informasi
+                Close Information
               </button>
             </div>
           </div>
