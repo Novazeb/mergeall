@@ -23,7 +23,7 @@ export default function OrganizePdfTool() {
   const handleFileSelected = async (files) => {
     const pdf = files[0];
     if (!pdf || (!pdf.type.includes('pdf') && !pdf.name.toLowerCase().endsWith('.pdf'))) {
-      showToast('Pilih file PDF yang valid.', 'error');
+      showToast('Please select a valid PDF file.', 'error');
       return;
     }
 
@@ -48,7 +48,7 @@ export default function OrganizePdfTool() {
     } catch (err) {
       console.error(err);
       setIsLoadingThumbs(false);
-      showToast('Gagal memuat halaman PDF. File mungkin terenkripsi atau rusak.', 'error');
+      showToast('Failed to load PDF pages. The file might be encrypted or corrupted.', 'error');
     }
   };
 
@@ -88,7 +88,7 @@ export default function OrganizePdfTool() {
 
   const deletePage = (index) => {
     if (pages.length <= 1) {
-      showToast('PDF harus menyisakan minimal 1 halaman.', 'info');
+      showToast('A PDF must have at least 1 page.', 'info');
       return;
     }
     setPages((prev) => prev.filter((_, i) => i !== index));
@@ -117,11 +117,11 @@ export default function OrganizePdfTool() {
       setIsProcessing(false);
 
       confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-      showToast('PDF berhasil diatur dan disimpan!', 'success');
+      showToast('PDF organized and saved successfully!', 'success');
     } catch (err) {
       console.error(err);
       setIsProcessing(false);
-      showToast('Gagal memproses file PDF.', 'error');
+      showToast('Failed to process PDF file.', 'error');
     }
   };
 
@@ -141,9 +141,9 @@ export default function OrganizePdfTool() {
   return (
     <div className="tool-card">
       <div className="tool-header">
-        <h2 className="tool-title">Atur & Putar Halaman PDF</h2>
+        <h2 className="tool-title">Organize & Rotate PDF Pages</h2>
         <p className="tool-description">
-          Putar orientasi halaman, susun ulang posisi urutan, atau hapus halaman yang tidak diperlukan.
+          Rotate page orientations, reorder page sequence, or delete unnecessary pages.
         </p>
       </div>
 
@@ -152,13 +152,13 @@ export default function OrganizePdfTool() {
           onFilesSelected={handleFileSelected}
           accept="application/pdf,.pdf"
           multiple={false}
-          title="Pilih atau seret file PDF ke sini"
-          subtitle="File diproses langsung di browser Anda"
+          title="Drop PDF file here to organize"
+          subtitle="Processed directly in your browser"
           iconType="pdf"
         />
       ) : isLoadingThumbs ? (
         <div className="p-8">
-          <ProgressBar progress={loadProgress} label={`Membuat thumbnail halaman ${file.name}...`} />
+          <ProgressBar progress={loadProgress} label={`Rendering page thumbnails for ${file.name}...`} />
         </div>
       ) : (
         <div className="flex flex-col gap-4">
@@ -169,13 +169,13 @@ export default function OrganizePdfTool() {
               <div className="truncate">
                 <h4 className="text-sm font-semibold text-slate-900 truncate">{file.name}</h4>
                 <p className="text-xs text-slate-500">
-                  {pages.length} Halaman &bull; {formatBytes(file.size)}
+                  {pages.length} Pages &bull; {formatBytes(file.size)}
                 </p>
               </div>
             </div>
 
             <button onClick={resetAll} className="btn-danger-outline">
-              <Trash2 className="w-4 h-4" /> Ganti File
+              <Trash2 className="w-4 h-4" /> Change File
             </button>
           </div>
 
@@ -183,17 +183,17 @@ export default function OrganizePdfTool() {
           <div className="selection-controls-bar">
             <div className="quick-select-buttons">
               <button onClick={() => rotateAll(90)} className="btn-pill flex items-center gap-1.5">
-                <RotateCw className="w-3.5 h-3.5" /> Putar Semua +90°
+                <RotateCw className="w-3.5 h-3.5" /> Rotate All +90°
               </button>
               <button onClick={() => rotateAll(-90)} className="btn-pill flex items-center gap-1.5">
-                <RotateCcw className="w-3.5 h-3.5" /> Putar Semua -90°
+                <RotateCcw className="w-3.5 h-3.5" /> Rotate All -90°
               </button>
               <button onClick={resetPages} className="btn-pill flex items-center gap-1.5">
-                <Undo2 className="w-3.5 h-3.5" /> Reset Urutan
+                <Undo2 className="w-3.5 h-3.5" /> Reset Order
               </button>
             </div>
             <span className="text-xs text-slate-500">
-              Gunakan panah untuk geser urutan, ikon putar untuk rotasi.
+              Use arrows to reorder pages, rotate icon to change orientation.
             </span>
           </div>
 
@@ -203,7 +203,7 @@ export default function OrganizePdfTool() {
               <div key={page.id} className="page-thumb-card">
                 <div className="page-thumb-header">
                   <span className="text-xs font-semibold text-slate-700">
-                    Hal. {idx + 1}
+                    Page {idx + 1}
                   </span>
                   {page.rotation !== 0 && (
                     <span className="text-xs font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
@@ -215,7 +215,7 @@ export default function OrganizePdfTool() {
                 <div className="page-thumb-img-wrapper">
                   <img
                     src={page.dataUrl}
-                    alt={`Halaman ${idx + 1}`}
+                    alt={`Page ${idx + 1}`}
                     style={{
                       transform: `rotate(${page.rotation}deg)`,
                       transition: 'transform 0.15s ease-in-out',
@@ -228,7 +228,7 @@ export default function OrganizePdfTool() {
                     <button
                       onClick={() => movePage(idx, -1)}
                       disabled={idx === 0}
-                      title="Geser ke kiri"
+                      title="Move left"
                       className="btn-icon"
                       style={{ width: '28px', height: '28px' }}
                     >
@@ -237,7 +237,7 @@ export default function OrganizePdfTool() {
                     <button
                       onClick={() => movePage(idx, 1)}
                       disabled={idx === pages.length - 1}
-                      title="Geser ke kanan"
+                      title="Move right"
                       className="btn-icon"
                       style={{ width: '28px', height: '28px' }}
                     >
@@ -248,7 +248,7 @@ export default function OrganizePdfTool() {
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => rotatePage(idx, 90)}
-                      title="Putar 90 derajat"
+                      title="Rotate 90 degrees"
                       className="btn-icon text-indigo-600"
                       style={{ width: '28px', height: '28px' }}
                     >
@@ -256,7 +256,7 @@ export default function OrganizePdfTool() {
                     </button>
                     <button
                       onClick={() => deletePage(idx)}
-                      title="Hapus halaman"
+                      title="Delete page"
                       className="btn-icon text-rose-600"
                       style={{ width: '28px', height: '28px' }}
                     >
@@ -269,7 +269,7 @@ export default function OrganizePdfTool() {
           </div>
 
           {isProcessing && (
-            <ProgressBar progress={processProgress} label="Menyimpan susunan PDF..." />
+            <ProgressBar progress={processProgress} label="Saving organized PDF..." />
           )}
 
           {resultBlob ? (
@@ -277,16 +277,16 @@ export default function OrganizePdfTool() {
               <div className="success-info">
                 <Check className="w-5 h-5 text-emerald-600" />
                 <div>
-                  <h4 className="font-semibold text-sm">Susunan PDF Selesai</h4>
-                  <p className="text-xs">File PDF baru siap diunduh.</p>
+                  <h4 className="font-semibold text-sm">PDF Organization Complete</h4>
+                  <p className="text-xs">Your organized PDF is ready to download.</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={handleSave} className="btn-secondary">
-                  <RefreshCw className="w-4 h-4" /> Simpan Ulang
+                  <RefreshCw className="w-4 h-4" /> Save Again
                 </button>
                 <button onClick={handleDownload} className="btn-primary">
-                  <Download className="w-4 h-4" /> Unduh PDF
+                  <Download className="w-4 h-4" /> Download PDF
                 </button>
               </div>
             </div>
@@ -297,7 +297,7 @@ export default function OrganizePdfTool() {
                 disabled={isProcessing || pages.length === 0}
                 className="btn-primary btn-hero"
               >
-                Terapkan Perubahan & Simpan PDF ({pages.length} Halaman)
+                Apply Changes & Save PDF ({pages.length} Pages)
               </button>
             </div>
           )}
