@@ -22,7 +22,7 @@ export default function ProtectPdfTool() {
   const handleFileSelected = (files) => {
     const pdf = files[0];
     if (!pdf || (!pdf.type.includes('pdf') && !pdf.name.toLowerCase().endsWith('.pdf'))) {
-      showToast('Pilih file PDF yang valid.', 'error');
+      showToast('Please select a valid PDF file.', 'error');
       return;
     }
     setFile(pdf);
@@ -35,12 +35,12 @@ export default function ProtectPdfTool() {
     if (!file) return;
 
     if (!password) {
-      showToast('Masukkan password pengaman dokumen.', 'info');
+      showToast('Please enter a password to protect the document.', 'info');
       return;
     }
 
     if (password !== confirmPassword) {
-      showToast('Konfirmasi password tidak cocok. Silakan cek kembali.', 'error');
+      showToast('Passwords do not match. Please check and try again.', 'error');
       return;
     }
 
@@ -53,11 +53,11 @@ export default function ProtectPdfTool() {
       setIsProcessing(false);
 
       confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-      showToast('PDF berhasil dienkripsi dan dikunci!', 'success');
+      showToast('PDF encrypted and password-protected successfully!', 'success');
     } catch (err) {
       console.error('PDF protection error:', err);
       setIsProcessing(false);
-      showToast('Gagal mengenkripsi PDF. File mungkin sudah terenkripsi.', 'error');
+      showToast('Failed to encrypt PDF. The file might already be protected.', 'error');
     }
   };
 
@@ -78,9 +78,9 @@ export default function ProtectPdfTool() {
   return (
     <div className="tool-card">
       <div className="tool-header">
-        <h2 className="tool-title">Kunci PDF dengan Password</h2>
+        <h2 className="tool-title">Protect PDF with Password</h2>
         <p className="tool-description">
-          Lindungi dokumen PDF Anda dengan enkripsi password langsung di memori browser.
+          Secure your PDF documents with strong password encryption directly in browser memory.
         </p>
       </div>
 
@@ -89,8 +89,8 @@ export default function ProtectPdfTool() {
           onFilesSelected={handleFileSelected}
           accept="application/pdf,.pdf"
           multiple={false}
-          title="Pilih atau seret file PDF ke sini"
-          subtitle="Password dan file diproses secara privat di perangkat Anda"
+          title="Choose or drop a PDF file here"
+          subtitle="Passwords and files are processed privately on your device"
           iconType="pdf"
         />
       ) : (
@@ -101,20 +101,20 @@ export default function ProtectPdfTool() {
               <div className="truncate">
                 <h4 className="text-sm font-semibold text-slate-900 truncate">{file.name}</h4>
                 <p className="text-xs text-slate-500">
-                  {formatBytes(file.size)} &bull; Siap dienkripsi
+                  {formatBytes(file.size)} &bull; Ready to encrypt
                 </p>
               </div>
             </div>
 
             <button onClick={resetAll} className="btn-danger-outline">
-              <Trash2 className="w-4 h-4" /> Ganti File
+              <Trash2 className="w-4 h-4" /> Change File
             </button>
           </div>
 
           <form onSubmit={handleProtect} className="p-4 bg-slate-50 border border-slate-200 rounded-lg flex flex-col gap-4">
             <div className="flex items-center gap-2 text-slate-800 font-semibold text-xs uppercase tracking-wide">
               <KeyRound className="w-4 h-4 text-indigo-600" />
-              <span>Atur Password Dokumen</span>
+              <span>Set Document Password</span>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -127,7 +127,7 @@ export default function ProtectPdfTool() {
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Masukkan password"
+                    placeholder="Enter password"
                     className="input-text w-full pr-10"
                     disabled={isProcessing}
                     required
@@ -145,13 +145,13 @@ export default function ProtectPdfTool() {
 
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-slate-700">
-                  Konfirmasi Password *
+                  Confirm Password *
                 </label>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Ulangi password"
+                  placeholder="Repeat password"
                   className="input-text w-full"
                   disabled={isProcessing}
                   required
@@ -162,7 +162,7 @@ export default function ProtectPdfTool() {
             <div className="flex items-center gap-2 p-2.5 bg-white border border-slate-200 rounded-md text-xs text-slate-600">
               <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>
-                Aplikasi PDF viewer (Chrome, Edge, Adobe Acrobat, Apple Preview) akan meminta password ini untuk membuka dokumen.
+                PDF viewers (Chrome, Edge, Adobe Acrobat, Apple Preview) will require this password to open the document.
               </span>
             </div>
 
@@ -173,14 +173,14 @@ export default function ProtectPdfTool() {
                   disabled={isProcessing || !password || !confirmPassword}
                   className="btn-primary btn-hero"
                 >
-                  <Lock className="w-4 h-4" /> Kunci Dokumen PDF Sekarang
+                  <Lock className="w-4 h-4" /> Protect PDF Document Now
                 </button>
               </div>
             )}
           </form>
 
           {isProcessing && (
-            <ProgressBar progress={progress} label="Mengenkripsi dokumen PDF di browser..." />
+            <ProgressBar progress={progress} label="Encrypting PDF document in browser..." />
           )}
 
           {protectedBlob && (
@@ -188,16 +188,16 @@ export default function ProtectPdfTool() {
               <div className="success-info">
                 <Check className="w-5 h-5 text-emerald-600" />
                 <div>
-                  <h4 className="text-sm font-bold">PDF Berhasil Diproteksi</h4>
-                  <p className="text-xs">Hanya pengguna yang memiliki password yang dapat membuka file ini.</p>
+                  <h4 className="text-sm font-bold">PDF Protected Successfully</h4>
+                  <p className="text-xs">Only users with the password can open this file.</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={resetAll} className="btn-secondary">
-                  <RefreshCw className="w-4 h-4" /> Kunci File Lain
+                  <RefreshCw className="w-4 h-4" /> Protect Another File
                 </button>
                 <button onClick={handleDownload} className="btn-primary">
-                  <Download className="w-4 h-4" /> Unduh PDF Terproteksi
+                  <Download className="w-4 h-4" /> Download Protected PDF
                 </button>
               </div>
             </div>
