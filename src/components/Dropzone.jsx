@@ -80,10 +80,10 @@ export default function Dropzone({
 
         <div className="dropzone-features">
           <span className="feature-pill flex items-center gap-1">
-            <Zap className="w-3.5 h-3.5 text-slate-500" /> Cepat & Ringan
+            <Zap className="w-3.5 h-3.5 text-slate-500" /> Fast & Lightweight
           </span>
           <span className="feature-pill flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> 100% Privat di Browser
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> 100% In-Browser Privacy
           </span>
         </div>
       </div>
