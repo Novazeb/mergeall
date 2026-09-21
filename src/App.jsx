@@ -12,6 +12,7 @@ import OrganizePdfTool from './tools/OrganizePdfTool';
 import CompressPdfTool from './tools/CompressPdfTool';
 import ProtectPdfTool from './tools/ProtectPdfTool';
 import ScanDocumentTool from './tools/ScanDocumentTool';
+import QrCodeTool from './tools/QrCodeTool';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('merge');
@@ -29,6 +30,7 @@ export default function App() {
             {activeTab === 'split' && <SplitPdfTool />}
             {activeTab === 'organize' && <OrganizePdfTool />}
             {activeTab === 'scan' && <ScanDocumentTool />}
+            {activeTab === 'qrcode' && <QrCodeTool />}
             {activeTab === 'img2pdf' && <ImageToPdfTool />}
             {activeTab === 'pdf2img' && <PdfToImageTool />}
             {activeTab === 'compress' && <CompressImageTool />}
