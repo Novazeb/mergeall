@@ -1,5 +1,9 @@
 # mergeall
 
+<p align="center">
+  <img src="public/vite.svg" alt="mergeall Logo" width="72" height="72" />
+</p>
+
 <h3 align="center">Client-Side PDF and Image Utility Application</h3>
 
 <p align="center">
@@ -25,7 +29,7 @@ Modern web workflows frequently require manipulating sensitive documents, such a
 
 ## Functional Modules
 
-The application provides nine dedicated utilities grouped into organization, conversion, optimization, and security domains:
+The application provides dedicated utilities grouped into organization, conversion, optimization, and security domains:
 
 | Module | Technical Functionality |
 | :--- | :--- |
@@ -33,6 +37,7 @@ The application provides nine dedicated utilities grouped into organization, con
 | **Split and Extract** | Segregates document pages by custom ranges or decomposes a PDF into individual single-page files, available for download individually or packaged as a ZIP archive. |
 | **Organize and Rotate** | Enables page reordering, selective or uniform angular rotations (90, 180, and 270 degrees), and page deletions. |
 | **Scan Document** | Processes camera captures or raster inputs through document boundary detection, perspective alignment, grayscale or binary thresholding filters, and brightness or contrast adjustments. |
+| **URL to QR Code** | Generates high-resolution vector and raster QR codes from links or text with customizable color themes, error correction levels, and an integrated bottom-center "mergeall" watermark. |
 | **Image to PDF** | Compiles raster image formats (JPEG, PNG, WebP) into formatted PDF documents with configurable dimensions, orientation, and margin settings. |
 | **PDF to Image** | Renders vector PDF pages into high-resolution raster images (JPEG, PNG) with custom resolution scaling. |
 | **Compress Image** | Downsamples and compresses image files using iterative quality thresholds while maintaining visual integrity. |
@@ -64,6 +69,7 @@ The architectural foundation of mergeall adheres to the principle of zero data p
 - **PDF Manipulation and Parsing**: `pdf-lib`, `pdfjs-dist`
 - **Client-Side Cryptography**: `@pdfsmaller/pdf-encrypt-lite`
 - **Image Compression**: `browser-image-compression`
+- **QR Code Generation**: `qrcode`
 - **Archive Generation and File I/O**: `jszip`, `file-saver`
 - **Component Interface Icons**: `lucide-react`
 
@@ -134,9 +140,10 @@ mergeall/
 │   │   ├── OrganizePdfTool.jsx
 │   │   ├── PdfToImageTool.jsx
 │   │   ├── ProtectPdfTool.jsx
+│   │   ├── QrCodeTool.jsx
 │   │   ├── ScanDocumentTool.jsx
 │   │   └── SplitPdfTool.jsx
-│   ├── utils/           # Shared utility functions (PDF engine, image processing)
+│   ├── utils/           # Shared utility functions (PDF engine, image processing, QR generator)
 │   ├── App.jsx          # Primary layout and tool navigation router
 │   └── main.jsx         # Application entry point
 ├── netlify.toml         # Deployment routing configuration
@@ -168,6 +175,5 @@ Contributions that align with the privacy-first, client-side objectives of this 
 ---
 
 ## License
-This project is licensed under the terms of the MIT License. Refer to the `LICENSE` file for full terms and conditions.
 
 This project is licensed under the terms of the MIT License. Refer to the `LICENSE` file for full terms and conditions.
