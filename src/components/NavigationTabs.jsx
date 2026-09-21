@@ -11,7 +11,8 @@ import {
   Info,
   X,
   ShieldCheck,
-  ScanLine
+  ScanLine,
+  QrCode
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -28,6 +29,7 @@ const TABS = [
   { id: 'split', label: 'Split & Extract', icon: Scissors, desc: 'Extract or separate pages', category: 'organize' },
   { id: 'organize', label: 'Organize & Rotate', icon: RotateCw, desc: 'Reorder and rotate pages', category: 'organize' },
   { id: 'scan', label: 'Scan Document', icon: ScanLine, desc: 'Clean document scan from photo', category: 'convert' },
+  { id: 'qrcode', label: 'URL to QR Code', icon: QrCode, desc: 'Generate QR code with watermark', category: 'convert' },
   { id: 'img2pdf', label: 'Image to PDF', icon: ImagePlus, desc: 'Convert JPG/PNG to PDF', category: 'convert' },
   { id: 'pdf2img', label: 'PDF to Image', icon: FileImage, desc: 'Export pages to photos', category: 'convert' },
   { id: 'compress', label: 'Compress Image', icon: Minimize2, desc: 'Reduce image file size', category: 'optimize' },
