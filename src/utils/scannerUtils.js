@@ -1,5 +1,5 @@
 /**
- * Utility functions for client-side document scanning, edge detection, and image enhancement filters
+ * Scaner utilitis from python library, using hookplace library between Threshold and luminance
  */
 
 /**
